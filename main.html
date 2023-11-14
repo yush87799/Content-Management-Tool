@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unique Content Manager</title>
+  <style>
+    :root {
+      --main-color: rgb(11, 167, 146); /* Define a main color for the website */
+      --font-family: 'Arial', sans-serif; /* Define a font family for the website */
+    }
+
+    body {
+      font-family: var(--font-family);
+      margin: 20px;
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    input[type="submit"], input[type="reset"], input[type="button"] {
+      padding: 10px 20px;
+      background-color: var(--main-color);
+      color: #000000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    #detailsContainer {
+      margin-top: 30px;
+    }
+
+    #detailsContainer h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #detailsContainer h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    #detailsContainer p {
+      margin-bottom: 10px;
+    }
+
+    #detailsContainer img {
+      max-width: 100%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #detailsContainer iframe {
+      max-width: 100%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #wordCount {
+      color: var(--main-color);
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var form = document.querySelector('#blogForm');
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+
+        // Retrieve the form values
+        var title = document.querySelector('#title').value;
+        var content = document.querySelector('#content').value;
+        var image = document.querySelector('#image').value;
+        var video = document.querySelector('#video').value;
+
+        // Display the filled details on the webpage
+        var detailsContainer = document.querySelector('#detailsContainer');
+        detailsContainer.innerHTML = `
+          <h1>Blog Details</h1>
+          <h2>Title: ${title}</h2>
+          <p>Content: ${content}</p>
+          <img src="${image}" alt="Blog Image">
+          <iframe src="${video}" title="Blog Video"></iframe>
+        `;
+      });
+
+      form.addEventListener('reset', function(event) {
+        // Clear the details container
+        var detailsContainer = document.querySelector('#detailsContainer');
+        detailsContainer.innerHTML = '';
+      });
+
+      var content = document.querySelector('#content');
+
+      content.addEventListener('input', function(event) {
+        // Count the number of words in the content
+        var words = content.value.trim().split(/\s+/);
+        var wordCount = words.length;
+
+        // Display the word count on the webpage
+        var wordCountSpan = document.querySelector('#wordCount');
+        wordCountSpan.textContent = wordCount;
+      });
+
+      var video = document.querySelector('#video');
+
+      video.addEventListener('input', function(event) {
+        // Check if the video URL is valid
+        var videoURL = video.value;
+        var isValid = videoURL.startsWith('https://www.youtube.com/embed/');
+
+        // Enable or disable the preview button based on the validity
+        var previewButton = document.querySelector('#previewButton');
+        previewButton.disabled = !isValid;
+      });
+
+      var previewButton = document.querySelector('#previewButton');
+
+      previewButton.addEventListener('click', function(event) {
+        // Preview the video in a new window
+        var videoURL = video.value;
+        window.open(videoURL, 'Video Preview', 'width=800, height=600');
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <form id="blogForm">
+    <h1>Create a Unique Blog</h1>
+
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" placeholder="Enter your unique title" required>
+
+    <label for="content">Content:</label>
+    <textarea id="content" name="content" rows="4" placeholder="Share your unique content" required></textarea>
+    <span id="wordCount">0</span> words
+
+    <label for="image">Image:</label>
+    <input type="text" id="image" name="image" placeholder="Paste a unique image URL" required>
+
+    <label for="video">Video URL:</label>
+    <input type="text" id="video" name="video" placeholder="Insert a unique video URL" required>
+    <input type="button" id="previewButton" value="Preview Video" disabled>
+
+    <input type="submit" value="Create Unique Blog">
+    <input type="reset" value="Reset Form">
+  </form>
+
+  <div id="detailsContainer"></div>
+
+</body>
+</html>
